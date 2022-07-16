@@ -16,7 +16,7 @@ scrape_configs:
     scrape_interval: 5s
 
     static_configs:
-      # Note don'tuse "localhost" because it won't resolve inside the docker container
+      # Note don't use "localhost" because it won't resolve inside the docker container
       # Instead use 127.0.0.1
       - targets: ['127.0.0.1:8000']
         labels:

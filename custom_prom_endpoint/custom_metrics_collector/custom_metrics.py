@@ -21,7 +21,7 @@ class CustomMetricsCollector(object):
         # Ever-increasing counter
         self.fake_rx_pkts = self.fake_rx_pkts + self.fake_rx_pkt_delta
 
-        # Triangle-wave guage
+        # Triangle-wave guage cycles from 0-10 and back
         self.fake_buffer_level = self.fake_buffer_level + self.fake_buffer_delta
         if self.fake_buffer_level > self.fake_buffer_max:
             self.fake_buffer_level = self.fake_buffer_max-1
@@ -51,7 +51,7 @@ class CustomMetricsCollector(object):
         c.add_metric(labels=label_values, value=self.fake_rx_pkts)
         yield c
 
-        # Status value - UP or DOWN
+        # Enumerated "State" values
         s = StateSetMetricFamily('port_link_status', 'Link state of an interface (port)', labels=label_names)
         s.add_metric(labels=label_values,value={'UP':True} if self.fake_status else {'DOWN':False}, timestamp=datetime.now().timestamp())
         yield s
@@ -70,7 +70,7 @@ class CustomMetricsCollector(object):
         c.add_metric(labels=label_values, value=self.fake_rx_pkts*2)
         yield c
 
-        # Status value - opposite of rist port's status
+        # Status value - opposite of first port's status
         s = StateSetMetricFamily('port_link_status', 'Link state of an interface (port)', labels=label_names)
         s.add_metric(labels=label_values,value={'UP':True} if not self.fake_status else {'DOWN':False}, timestamp=datetime.now().timestamp())
         yield s
